@@ -36,8 +36,20 @@ public class PlayerController : MonoBehaviour
     [SerializeField] LineRenderer lineRenderer1;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] GameObject root;
+    [SerializeField] TMP_Text blueNum;
+    [SerializeField] TMP_Text redNum;
+    [SerializeField] TMP_Text yellowNum;
+    [SerializeField] TMP_Text greenNum;
+
 
     private Color color = Color.blue;
+    private string colorString = "blue";
+    private int blueResource =  100;
+    private int redResource =  100;
+    private int greenResource =  100;
+    private int yellowResource =  100;
+    private float time = 0.0f;
+
 
 
     // Update is called once per frame
@@ -53,19 +65,85 @@ public class PlayerController : MonoBehaviour
         lineRenderer.positionCount  = 2;
         Vector3[] linePos = CheckMouse(worldPoint, hex);
         lineRenderer.SetPositions(linePos);
-        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject()) {
+        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos)) {
             CreateRootAtRenderer();
         }
+        time += Time.deltaTime;
+        if (time >= 5.0f) {
+            if(!ChangeResourceValues(-5, null)) {
+                Debug.Log("Lose");
+            }
+            time = 0.0f;
+        }
     }
+
+    bool RootAlreadyHere(Vector3[] linePos) {
+        Collider[] hitColliders = Physics.OverlapSphere((linePos[0]+linePos[1])/2, .1f);
+        return hitColliders.Length > 0;
+    }
+
+
 
     void CreateRootAtRenderer() {
         Mesh lineMesh = new Mesh();
         lineRenderer.BakeMesh(lineMesh);
         root.GetComponentInChildren<MeshFilter>().mesh = lineMesh;
+
         Material mat = new Material(Shader.Find("Sprites/Default"));
         mat.color = color;
+        if(!ChangeResourceValues(-10, colorString)) {
+            return;
+        }
         GameObject newRoot = Instantiate(root, Vector3.zero, Quaternion.identity);     
         newRoot.GetComponentInChildren<MeshRenderer>().material= mat;  
+        newRoot.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;  
+    }
+
+    bool CanPayColorPrice(int price, string colorToCheck) {
+        price = Mathf.Abs(price);
+        switch(colorToCheck){
+            case "blue":
+                return (blueResource >= price);
+            case "red":
+                return (redResource >= price);
+            case "green":
+                return (greenResource >= price);
+            case "yellow":
+                return (yellowResource >= price);
+            default:
+                return (yellowResource >= price && greenResource >= price && redResource >= price && blueResource >= price);
+        }
+    }
+
+    public bool ChangeResourceValues (int numToChange, string colorToReduce) {
+        if(!CanPayColorPrice(numToChange, colorToReduce)) {
+            return false;
+        }
+        switch(colorToReduce){
+            case "blue":
+                blueResource += numToChange;
+                break;
+            case "red":
+                redResource += numToChange;
+                break;
+            case "green":
+                greenResource += numToChange;
+                break;
+            case "yellow":
+                yellowResource += numToChange;
+                break;
+            default:
+                blueResource += numToChange;
+                yellowResource += numToChange;
+                greenResource += numToChange;
+                redResource += numToChange;
+                break;
+        }
+        blueNum.text = blueResource.ToString();
+        redNum.text = redResource.ToString();
+        greenNum.text = greenResource.ToString();
+        yellowNum.text = yellowResource.ToString();
+        return true;
     }
 
     Vector3[] CheckMouse(Vector3 worldPoint, Hex hex) {
@@ -96,18 +174,23 @@ public class PlayerController : MonoBehaviour
         switch(value) {
             case 0:
                 color = Color.blue;
+                colorString = "blue";
                 break;
             case 1:
                 color = Color.red;
+                colorString = "red";
                 break;
             case 2:
                 color = Color.yellow;
+                colorString = "yellow";
                 break;
             case 3:
                 color = Color.green;
+                colorString = "green";
                 break;
             default:
                 color = Color.blue;
+                colorString = "blue";
                 break;
         }
     }
