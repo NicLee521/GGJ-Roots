@@ -56,8 +56,9 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector3Int tilePos = tileMap.WorldToCell(worldPoint);
+        Vector3Int tilePos = tileMap.WorldToCell((Vector2) worldPoint);
         Vector3 tpos = tileMap.GetCellCenterWorld(tilePos);
+        Debug.Log(tileMap.GetTile(tilePos));
         Hex hex = new Hex(tpos, tileMap);
         lineRenderer1.positionCount  = hex.pointPositions.Length;
         lineRenderer1.loop = true;
