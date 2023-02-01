@@ -7,26 +7,30 @@ using UnityEngine.Tilemaps;
 public class Root : MonoBehaviour
 {
     Collider thisCollider;
+    PlayerController player;
+    MapController map;
     public List<GameObject> connections = new List<GameObject>();
-    public List<TileBase> connectedTiles = new List<TileBase>();
-    public bool isStart = false;
+    public List<Vector3Int> connectedTiles = new List<Vector3Int>();
     void Start()
     {
         thisCollider = gameObject.GetComponent<MeshCollider>();
-        GetConnectedTiles();
-        foreach(Tile tile in connectedTiles) {
-            if(tile.GetType() == typeof(ResourceTile)) {
-                ResourceTile rTile = tile as ResourceTile;
-                Debug.Log(rTile.GetResourceColor());
-            }
-        }
+        player = GameObject.FindObjectOfType<PlayerController>();
+        map = GameObject.FindObjectOfType<MapController>();
 
+        player.rootPlacement.AddListener(RootPlaced);
+        GetConnectedTiles();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
+    public void RootPlaced() {
+        foreach(Vector3Int tilePos in connectedTiles) {
+            TileData tileData = map.mapDict[tilePos];
+            if(tileData.resourceColor != "none") {
+                tileData.resourceNum -= 5;
+                player.ChangeResourceValues(5, tileData.resourceColor);
+                Debug.Log(tilePos + " : " + tileData.resourceNum);
+                map.mapDict[tilePos] = tileData;
+            }
+        }
     }
 
     void GetConnectedTiles() {
@@ -36,8 +40,8 @@ public class Root : MonoBehaviour
         Vector3 leftWorld = new Vector3(colBounds.center.x - colBounds.extents.x, colBounds.center.y, 0);
         Vector3Int rightTile = tileMap.WorldToCell((Vector2) rightWorld);
         Vector3Int leftTile = tileMap.WorldToCell((Vector2) leftWorld);
-        connectedTiles.Add(tileMap.GetTile(rightTile));
-        connectedTiles.Add(tileMap.GetTile(leftTile));
+        connectedTiles.Add(rightTile);
+        connectedTiles.Add(leftTile);
     }
 
     void OnCollisionEnter(Collision col) {

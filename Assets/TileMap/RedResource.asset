@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6019dc3ec1275344e86bf7291e383b6a, type: 3}
-  m_Name: New Resource Tile
+  m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
+  m_Name: RedResource
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -676887962, guid: a7878465efebeba498b770edf02c28d2, type: 3}
+  m_Sprite: {fileID: -676887962, guid: b695afe26d8c6cf48bc4598978f765ec, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1
@@ -34,4 +34,3 @@ MonoBehaviour:
   m_InstancedGameObject: {fileID: 0}
   m_Flags: 1
   m_ColliderType: 1
-  resourceColor: 

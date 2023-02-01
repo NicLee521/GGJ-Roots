@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 70731caba11f0aa43adced8933a84e21
+guid: b695afe26d8c6cf48bc4598978f765ec
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -113,47 +113,59 @@ TextureImporter:
     overridden: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Windows Store Apps
+    maxTextureSize: 512
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TileTest2_0
+      name: RedResource
       rect:
         serializedVersion: 2
-        x: 173
-        y: 1442
-        width: 730
-        height: 830
+        x: 101
+        y: 1427
+        width: 819
+        height: 713
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 591ca58bb8f025c419d4899d48b5a5fb
-      internalID: -1280811933
+      spriteID: 62a7e896b7fca074285648f21903e0f8
+      internalID: -676887962
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: TileTest2_1
+      name: Tile Test_1
       rect:
         serializedVersion: 2
-        x: 160
-        y: 551
-        width: 711
-        height: 820
+        x: 104
+        y: 604
+        width: 820
+        height: 711
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ca36af35eab5fc945996bc83723064a9
-      internalID: 1170631636
+      spriteID: b51daa93b884f864786b6f9f32849306
+      internalID: -1334177404
       vertices: []
       indices: 
       edges: []
@@ -169,8 +181,8 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TileTest2_1: 1170631636
-      TileTest2_0: -1280811933
+      RedResource: -676887962
+      Tile Test_1: -1334177404
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

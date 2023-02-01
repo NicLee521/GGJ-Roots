@@ -1621,6 +1621,9 @@ MonoBehaviour:
   yellowNum: {fileID: 88613795}
   greenNum: {fileID: 765327898}
   colorString: blue
+  rootPlacement:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &638739898
 GameObject:
   m_ObjectHideFlags: 0
@@ -5043,6 +5046,8 @@ Tilemap:
     m_Data: {fileID: -1280811933, guid: 70731caba11f0aa43adced8933a84e21, type: 3}
   - m_RefCount: 191
     m_Data: {fileID: 1170631636, guid: 70731caba11f0aa43adced8933a84e21, type: 3}
+  - m_RefCount: 0
+    m_Data: {fileID: 0}
   m_TileMatrixArray:
   - m_RefCount: 0
     m_Data:
@@ -5083,6 +5088,8 @@ Tilemap:
   m_TileColorArray:
   - m_RefCount: 197
     m_Data: {r: 1, g: 1, b: 1, a: 1}
+  - m_RefCount: 0
+    m_Data: {r: 5.1058e-41, g: 5.1058e-41, b: 5.1058e-41, a: 5.1058e-41}
   m_TileObjectToInstantiateArray: []
   m_AnimationFrameRate: 1
   m_Color: {r: 1, g: 1, b: 1, a: 1}

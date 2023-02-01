@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.Tilemaps;
 using UnityEngine.EventSystems;
 using TMPro;
+using UnityEngine.Events;
+
 public struct Hex {
     Vector3 topPoint;
     Vector3 topRightPoint;
@@ -49,6 +51,8 @@ public class PlayerController : MonoBehaviour
     private int greenResource =  100;
     private int yellowResource =  100;
 
+    public UnityEvent rootPlacement;
+
     void Start() {
         Vector3Int centerCell = new Vector3Int(0,0,0);
         Vector3 tpos = tileMap.GetCellCenterWorld(centerCell);
@@ -57,6 +61,9 @@ public class PlayerController : MonoBehaviour
         start.startWidth = .25f;
         start.useWorldSpace = true;
         CreateStartRoots(hex, start);
+        if(rootPlacement == null) {
+            rootPlacement = new UnityEvent();
+        }
     }
 
     // Update is called once per frame
@@ -93,6 +100,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
         CreateRoot(lineRenderer, color);
+        rootPlacement.Invoke();
         if(!ChangeResourceValues(-5, null)) {
             Debug.Log("Lose");
         }  
@@ -126,6 +134,9 @@ public class PlayerController : MonoBehaviour
     }
 
     bool CanPayColorPrice(int price, string colorToCheck) {
+        if(price >= 0) {
+            return true;
+        }
         price = Mathf.Abs(price);
         switch(colorToCheck){
             case "blue":
