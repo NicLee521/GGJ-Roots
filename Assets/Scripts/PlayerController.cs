@@ -43,22 +43,27 @@ public class PlayerController : MonoBehaviour
 
 
     private Color color = Color.blue;
-    private string colorString = "blue";
+    public string colorString = "blue";
     private int blueResource =  100;
     private int redResource =  100;
     private int greenResource =  100;
     private int yellowResource =  100;
-    private float time = 0.0f;
 
-
+    void Start() {
+        Vector3Int centerCell = new Vector3Int(0,0,0);
+        Vector3 tpos = tileMap.GetCellCenterWorld(centerCell);
+        Hex hex = new Hex(tpos, tileMap);
+        LineRenderer start = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
+        start.startWidth = .25f;
+        start.useWorldSpace = true;
+        CreateStartRoots(hex, start);
+    }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int tilePos = tileMap.WorldToCell((Vector2) worldPoint);
         Vector3 tpos = tileMap.GetCellCenterWorld(tilePos);
-        Debug.Log(tileMap.GetTile(tilePos));
         Hex hex = new Hex(tpos, tileMap);
         lineRenderer1.positionCount  = hex.pointPositions.Length;
         lineRenderer1.loop = true;
@@ -66,15 +71,8 @@ public class PlayerController : MonoBehaviour
         lineRenderer.positionCount  = 2;
         Vector3[] linePos = CheckMouse(worldPoint, hex);
         lineRenderer.SetPositions(linePos);
-        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos)) {
+        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos)) {
             CreateRootAtRenderer();
-        }
-        time += Time.deltaTime;
-        if (time >= 5.0f) {
-            if(!ChangeResourceValues(-5, null)) {
-                Debug.Log("Lose");
-            }
-            time = 0.0f;
         }
     }
 
@@ -83,21 +81,48 @@ public class PlayerController : MonoBehaviour
         return hitColliders.Length > 0;
     }
 
+    bool RootConnected(Vector3[] linePos) {
+        Collider[] hitColliders1 = Physics.OverlapSphere(linePos[0], .1f);
+        Collider[] hitColliders2 = Physics.OverlapSphere(linePos[1], .1f);
 
+        return (hitColliders1.Length > 0 || hitColliders2.Length > 0);
+    }
 
     void CreateRootAtRenderer() {
-        Mesh lineMesh = new Mesh();
-        lineRenderer.BakeMesh(lineMesh);
-        root.GetComponentInChildren<MeshFilter>().mesh = lineMesh;
-
-        Material mat = new Material(Shader.Find("Sprites/Default"));
-        mat.color = color;
         if(!ChangeResourceValues(-10, colorString)) {
             return;
         }
+        CreateRoot(lineRenderer, color);
+        if(!ChangeResourceValues(-5, null)) {
+            Debug.Log("Lose");
+        }  
+    }
+
+    void CreateStartRoots(Hex hex, LineRenderer start) {
+        start.positionCount = 2;
+        start.SetPositions(new Vector3[]{hex.pointPositions[5], hex.pointPositions[0]});
+        //top left edge
+        CreateRoot(start, Color.blue);
+        start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
+        //top right edge
+        CreateRoot(start, Color.red);
+        start.SetPositions(new Vector3[]{hex.pointPositions[2], hex.pointPositions[3]});
+        //bottom right edge
+        CreateRoot(start, Color.yellow);
+        start.SetPositions(new Vector3[]{hex.pointPositions[3], hex.pointPositions[4]});
+        //bottom left edge
+        CreateRoot(start, Color.green);
+    }
+
+    void CreateRoot(LineRenderer lr, Color rootColor) {
+        Mesh lineMesh = new Mesh();
+        lr.BakeMesh(lineMesh);
+        root.GetComponentInChildren<MeshFilter>().mesh = lineMesh;
+        Material mat = new Material(Shader.Find("Sprites/Default"));
+        mat.color = rootColor;
         GameObject newRoot = Instantiate(root, Vector3.zero, Quaternion.identity);     
         newRoot.GetComponentInChildren<MeshRenderer>().material= mat;  
-        newRoot.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;  
+        newRoot.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
     }
 
     bool CanPayColorPrice(int price, string colorToCheck) {
@@ -154,9 +179,9 @@ public class PlayerController : MonoBehaviour
                 k = 0;
             }
             Vector2 positionIToCenter = hex.GetCenterToPointByIndex(i);
-            Vector2 postitionKToCenter = hex.GetCenterToPointByIndex(k);
-            float angleArea = Vector2.Angle(positionIToCenter, postitionKToCenter);
-            if(CheckIfInTriangle(worldPoint, hex.center,  positionIToCenter, postitionKToCenter, angleArea)) {
+            Vector2 positionKToCenter = hex.GetCenterToPointByIndex(k);
+            float angleArea = Vector2.Angle(positionIToCenter, positionKToCenter);
+            if(CheckIfInTriangle(worldPoint, hex.center,  positionIToCenter, positionKToCenter, angleArea)) {
                 return new Vector3[]{hex.pointPositions[i], hex.pointPositions[k]};
             }
         }
