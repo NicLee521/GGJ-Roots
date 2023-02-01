@@ -11,6 +11,7 @@ public class Root : MonoBehaviour
     MapController map;
     public List<GameObject> connections = new List<GameObject>();
     public List<Vector3Int> connectedTiles = new List<Vector3Int>();
+    public bool isStart = false;
     void Start()
     {
         thisCollider = gameObject.GetComponent<MeshCollider>();
@@ -19,17 +20,74 @@ public class Root : MonoBehaviour
 
         player.rootPlacement.AddListener(RootPlaced);
         GetConnectedTiles();
+        
     }
 
     public void RootPlaced() {
         foreach(Vector3Int tilePos in connectedTiles) {
             TileData tileData = map.mapDict[tilePos];
-            if(tileData.resourceColor != "none") {
-                tileData.resourceNum -= 5;
-                player.ChangeResourceValues(5, tileData.resourceColor);
-                Debug.Log(tilePos + " : " + tileData.resourceNum);
-                map.mapDict[tilePos] = tileData;
+            HandleResourceTile(tileData, tilePos);
+            HandleFontTile(tileData, tilePos);
+        }
+    }
+
+    void HandleFontTile(TileData tileData, Vector3Int tilePos) {
+        if(!tileData.tile.name.Contains("Font")) {
+            return;
+        }
+        float percentTarget = 40.0f;
+        switch(tileData.tile.name) {
+            case "FontRed":
+                if(GetPercentOfRootsOfColor("red", tileData) >= percentTarget) {
+                    player.fontRed = true;
+                }
+                break;
+            case "FontBlue":
+                if(GetPercentOfRootsOfColor("blue", tileData) >= percentTarget) {
+                    player.fontBlue = true;
+                }
+                break;
+            case "FontYellow":
+                if(GetPercentOfRootsOfColor("yellow", tileData) >= percentTarget) {
+                    player.fontYellow = true;
+                }
+                break;
+            case "FontGreen":
+                if(GetPercentOfRootsOfColor("green", tileData) >= percentTarget) {
+                    player.fontGreen = true;
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
+    float GetPercentOfRootsOfColor(string color, TileData tileData) {
+        int totalRoots = 0;
+        foreach (var item in tileData.numOfColorRoots){
+            totalRoots += item.Value;
+        }
+        return ((float)tileData.numOfColorRoots[color]/ (float)totalRoots)*100.0f;
+    }
+    void HandleResourceTile(TileData tileData, Vector3Int tilePos) {
+        if(!tileData.tile.name.Contains("Resource")) {
+            return;
+        }
+        int resourcePerTurn = 10;
+        if(!tileData.takenFrom && tileData.resourceNum > 0 && GetRootColorString() == tileData.resourceColor) {
+            if(resourcePerTurn > tileData.resourceNum) {
+                resourcePerTurn = tileData.resourceNum;
             }
+            tileData.resourceNum -= resourcePerTurn;
+            player.ChangeResourceValues(resourcePerTurn, tileData.resourceColor);
+            tileData.takenFrom = true;
+            map.mapDict[tilePos] = tileData;
+        }
+    }
+
+    void SetRootsForTiles() {
+        foreach(Vector3Int tile in connectedTiles) {
+            map.mapDict[tile].SetAttachedRoots(gameObject);
         }
     }
 
@@ -49,6 +107,23 @@ public class Root : MonoBehaviour
             if(!connections.Contains(col.gameObject)) {
                 connections.Add(col.gameObject);
             }
+            SetRootsForTiles();
+        }
+    }
+
+    public string GetRootColorString() {
+        Material mat = gameObject.GetComponent<MeshRenderer>().material;
+        Color currentColor = mat.color;
+        if(currentColor.ToString() == Color.blue.ToString()) {
+            return "blue";
+        }else if(currentColor.ToString() == Color.red.ToString()) {
+            return "red";
+        }else if(currentColor.ToString() == Color.yellow.ToString()) {
+            return "yellow";
+        }else if(currentColor.ToString() == Color.green.ToString()) {
+            return "green";
+        } else {
+            return "none";
         }
     }
 }

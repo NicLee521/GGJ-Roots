@@ -6,30 +6,6 @@ using UnityEngine.EventSystems;
 using TMPro;
 using UnityEngine.Events;
 
-public struct Hex {
-    Vector3 topPoint;
-    Vector3 topRightPoint;
-    Vector3 botRightPoint;
-    Vector3 botPoint;
-    Vector3 botLeftPoint;
-    Vector3 topLeftPoint;
-    public Vector3 center;
-    public Vector3[] pointPositions;
-    public Hex(Vector3 tpos, Tilemap tileMap) {
-        this.center = new Vector3(tpos.x, tpos.y ,0);;
-        this.topPoint = new Vector3(tpos.x, tpos.y + tileMap.layoutGrid.cellSize.y/2,0);
-        this.topRightPoint = new Vector3(tpos.x + tileMap.layoutGrid.cellSize.x/2, tpos.y + tileMap.layoutGrid.cellSize.y/4, 0);
-        this.botRightPoint = new Vector3(tpos.x + tileMap.layoutGrid.cellSize.x/2, tpos.y - tileMap.layoutGrid.cellSize.y/4, 0);
-        this.botPoint = new Vector3(tpos.x, tpos.y - tileMap.layoutGrid.cellSize.y/2, 0);
-        this.botLeftPoint = new Vector3(tpos.x - tileMap.layoutGrid.cellSize.x/2, tpos.y - tileMap.layoutGrid.cellSize.y/4, 0);
-        this.topLeftPoint = new Vector3(tpos.x - tileMap.layoutGrid.cellSize.x/2, tpos.y + tileMap.layoutGrid.cellSize.x/4, 0);
-        this.pointPositions = new Vector3[]{this.topPoint, this.topRightPoint, this.botRightPoint, this.botPoint, this.botLeftPoint, this.topLeftPoint};
-    }
-
-    public Vector2 GetCenterToPointByIndex(int index) {
-        return this.pointPositions[index] - this.center;
-    }
-}
 public class PlayerController : MonoBehaviour
 {
     
@@ -52,8 +28,12 @@ public class PlayerController : MonoBehaviour
     private int yellowResource =  100;
 
     public UnityEvent rootPlacement;
+    public MapController map;
+
+    public bool fontRed, fontBlue, fontGreen, fontYellow;
 
     void Start() {
+        map = GameObject.FindObjectOfType<MapController>();
         Vector3Int centerCell = new Vector3Int(0,0,0);
         Vector3 tpos = tileMap.GetCellCenterWorld(centerCell);
         Hex hex = new Hex(tpos, tileMap);
@@ -80,7 +60,14 @@ public class PlayerController : MonoBehaviour
         lineRenderer.SetPositions(linePos);
         if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos)) {
             CreateRootAtRenderer();
+            if(CheckForComplete()){
+                Debug.Log("win");
+            }
         }
+    }
+
+    bool CheckForComplete() {
+        return (fontBlue && fontGreen && fontRed && fontYellow);
     }
 
     bool RootAlreadyHere(Vector3[] linePos) {
@@ -103,26 +90,27 @@ public class PlayerController : MonoBehaviour
         rootPlacement.Invoke();
         if(!ChangeResourceValues(-5, null)) {
             Debug.Log("Lose");
-        }  
+        }
+        map.ClearAllTaken();
     }
 
     void CreateStartRoots(Hex hex, LineRenderer start) {
         start.positionCount = 2;
         start.SetPositions(new Vector3[]{hex.pointPositions[5], hex.pointPositions[0]});
         //top left edge
-        CreateRoot(start, Color.blue);
+        CreateRoot(start, Color.blue, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
         //top right edge
-        CreateRoot(start, Color.red);
+        CreateRoot(start, Color.red, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[2], hex.pointPositions[3]});
         //bottom right edge
-        CreateRoot(start, Color.yellow);
+        CreateRoot(start, Color.yellow, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[3], hex.pointPositions[4]});
         //bottom left edge
-        CreateRoot(start, Color.green);
+        CreateRoot(start, Color.green, true);
     }
 
-    void CreateRoot(LineRenderer lr, Color rootColor) {
+    void CreateRoot(LineRenderer lr, Color rootColor, bool start = false) {
         Mesh lineMesh = new Mesh();
         lr.BakeMesh(lineMesh);
         root.GetComponentInChildren<MeshFilter>().mesh = lineMesh;
@@ -131,6 +119,7 @@ public class PlayerController : MonoBehaviour
         GameObject newRoot = Instantiate(root, Vector3.zero, Quaternion.identity);     
         newRoot.GetComponentInChildren<MeshRenderer>().material= mat;  
         newRoot.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
+        newRoot.GetComponentInChildren<Root>().isStart = start;
     }
 
     bool CanPayColorPrice(int price, string colorToCheck) {
