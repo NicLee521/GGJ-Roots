@@ -11,7 +11,7 @@ AnimatorController:
   m_AnimatorParameters: []
   m_AnimatorLayers:
   - serializedVersion: 5
-    m_Name: Base Layer
+    m_Name: MainLayer
     m_StateMachine: {fileID: 5394656403154905430}
     m_Mask: {fileID: 0}
     m_Motions: []
@@ -29,7 +29,7 @@ AnimatorState:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: GrassRoot
+  m_Name: Root
   m_Speed: 1
   m_CycleOffset: 0
   m_Transitions: []
@@ -69,11 +69,11 @@ AnimatorStateMachine:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Base Layer
+  m_Name: MainLayer
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: 3688176187485461154}
-    m_Position: {x: 200, y: 0, z: 0}
+    m_Position: {x: 340, y: 0, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions:

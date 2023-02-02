@@ -12,14 +12,14 @@ public class Root : MonoBehaviour
     public List<GameObject> connections = new List<GameObject>();
     public List<Vector3Int> connectedTiles = new List<Vector3Int>();
     public bool isStart = false;
-    public Animator anim;
     public string color;
     void Start()
     {
         thisCollider = gameObject.GetComponentInParent<MeshCollider>();
         player = GameObject.FindObjectOfType<PlayerController>();
         map = GameObject.FindObjectOfType<MapController>();
-        anim = gameObject.GetComponent<Animator>();
+        gameObject.GetComponent<SpriteRenderer>().sprite = player.GetCorrectSprite(color);
+        gameObject.GetComponent<Animator>().runtimeAnimatorController = player.GetCorrectController(color);
         player.rootPlacement.AddListener(RootPlaced);
         GetConnectedTiles();
         

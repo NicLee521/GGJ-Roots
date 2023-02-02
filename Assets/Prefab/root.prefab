@@ -96,7 +96,7 @@ Animator:
   m_GameObject: {fileID: 1779526811057987478}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: d0ac0787c5696044db3364c4597e800d, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -121,5 +121,4 @@ MonoBehaviour:
   connections: []
   connectedTiles: []
   isStart: 0
-  anim: {fileID: 0}
   color: 

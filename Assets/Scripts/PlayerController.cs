@@ -18,10 +18,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMP_Text redNum;
     [SerializeField] TMP_Text yellowNum;
     [SerializeField] TMP_Text greenNum;
-    [SerializeField] Sprite greenSprite;
-    [SerializeField] Sprite redSprite;
-    [SerializeField] Sprite blueSprite;
-    [SerializeField] Sprite yellowSprite;
+    [SerializeField] public Sprite greenSprite;
+    [SerializeField] public Sprite redSprite;
+    [SerializeField] public Sprite blueSprite;
+    [SerializeField] public Sprite yellowSprite;
+    [SerializeField] public RuntimeAnimatorController red, blue, green, yellow;
 
 
     private Color color = Color.blue;
@@ -35,6 +36,7 @@ public class PlayerController : MonoBehaviour
     public MapController map;
 
     public bool fontRed, fontBlue, fontGreen, fontYellow;
+   
 
     void Start() {
         map = GameObject.FindObjectOfType<MapController>();
@@ -124,14 +126,41 @@ public class PlayerController : MonoBehaviour
         GameObject parent = new GameObject("RootParent");
         parent.AddComponent<MeshCollider>();
         parent.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
-        Quaternion i = Quaternion.identity;
-        i.z = GetZRotation(linePositions, hex);
-        GameObject newRoot = Instantiate(root,  lineMesh.bounds.center,  i);
-        Debug.Log(newRoot.transform.rotation);
-        //newRoot.transform.SetParent(parent.transform);          
-        newRoot.GetComponent<SpriteRenderer>().sprite = greenSprite;
+        GameObject newRoot = Instantiate(root,  lineMesh.bounds.center,  Quaternion.identity);
+        newRoot.transform.Rotate(new Vector3(0,0,GetZRotation(linePositions, hex)));
         newRoot.GetComponent<Root>().isStart = start;
         newRoot.GetComponent<Root>().color = rootColor;
+        newRoot.transform.SetParent(parent.transform);
+    }
+
+    public RuntimeAnimatorController GetCorrectController(string rootColor) {
+        switch(rootColor){
+            case "blue":
+                return blue;
+            case "red":
+                return red;
+            case "green":
+                return green;
+            case "yellow":
+                return yellow;
+            default:
+                return null;
+        }
+    }
+
+    public Sprite GetCorrectSprite(string rootColor) {
+        switch(rootColor){
+            case "blue":
+                return blueSprite;
+            case "red":
+                return redSprite;
+            case "green":
+                return greenSprite;
+            case "yellow":
+                return yellowSprite;
+            default:
+                return null;
+        }
     }
 
     float GetZRotation(Vector3[] linePos, Hex hex) {

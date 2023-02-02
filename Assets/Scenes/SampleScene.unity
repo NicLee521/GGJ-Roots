@@ -1622,9 +1622,13 @@ MonoBehaviour:
   yellowNum: {fileID: 88613795}
   greenNum: {fileID: 765327898}
   greenSprite: {fileID: 651336284, guid: b45fd63eb9c5c1646b7d13ca38e348ce, type: 3}
-  redSprite: {fileID: 0}
-  blueSprite: {fileID: 0}
-  yellowSprite: {fileID: 0}
+  redSprite: {fileID: -698291983, guid: 334b4f2f40b00104ba800222189e4f9b, type: 3}
+  blueSprite: {fileID: -1538562896, guid: 4683020b02fd4e745b5c346decfc7ddf, type: 3}
+  yellowSprite: {fileID: -2030927087, guid: 46ffdd255c544e14b8307bab168b9c10, type: 3}
+  red: {fileID: 9100000, guid: 10f001f5b2b79124e9346fa4ed91e47d, type: 2}
+  blue: {fileID: 9100000, guid: 05d54daf7e73cd141b2989e071dc1143, type: 2}
+  green: {fileID: 9100000, guid: d0ac0787c5696044db3364c4597e800d, type: 2}
+  yellow: {fileID: 9100000, guid: 0e12fa94edd94674784e72a6e02b9f6e, type: 2}
   colorString: blue
   rootPlacement:
     m_PersistentCalls:
