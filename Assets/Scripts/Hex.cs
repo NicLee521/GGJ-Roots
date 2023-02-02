@@ -6,12 +6,12 @@ using UnityEngine.Tilemaps;
 
 public struct Hex
 {
-    Vector3 topPoint;
-    Vector3 topRightPoint;
-    Vector3 botRightPoint;
-    Vector3 botPoint;
-    Vector3 botLeftPoint;
-    Vector3 topLeftPoint;
+    public Vector3 topPoint;
+    public Vector3 topRightPoint;
+    public Vector3 botRightPoint;
+    public Vector3 botPoint;
+    public Vector3 botLeftPoint;
+    public Vector3 topLeftPoint;
     public Vector3 center;
     public Vector3[] pointPositions;
     public Hex(Vector3 tpos, Tilemap tileMap) {

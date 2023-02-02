@@ -18,6 +18,10 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMP_Text redNum;
     [SerializeField] TMP_Text yellowNum;
     [SerializeField] TMP_Text greenNum;
+    [SerializeField] Sprite greenSprite;
+    [SerializeField] Sprite redSprite;
+    [SerializeField] Sprite blueSprite;
+    [SerializeField] Sprite yellowSprite;
 
 
     private Color color = Color.blue;
@@ -59,7 +63,7 @@ public class PlayerController : MonoBehaviour
         Vector3[] linePos = CheckMouse(worldPoint, hex);
         lineRenderer.SetPositions(linePos);
         if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos)) {
-            CreateRootAtRenderer();
+            CreateRootAtRenderer(hex);
             if(CheckForComplete()){
                 Debug.Log("win");
             }
@@ -82,11 +86,11 @@ public class PlayerController : MonoBehaviour
         return (hitColliders1.Length > 0 || hitColliders2.Length > 0);
     }
 
-    void CreateRootAtRenderer() {
+    void CreateRootAtRenderer(Hex hex) {
         if(!ChangeResourceValues(-10, colorString)) {
             return;
         }
-        CreateRoot(lineRenderer, color);
+        CreateRoot(lineRenderer, colorString, hex, false);
         rootPlacement.Invoke();
         if(!ChangeResourceValues(-5, null)) {
             Debug.Log("Lose");
@@ -98,28 +102,69 @@ public class PlayerController : MonoBehaviour
         start.positionCount = 2;
         start.SetPositions(new Vector3[]{hex.pointPositions[5], hex.pointPositions[0]});
         //top left edge
-        CreateRoot(start, Color.blue, true);
+        CreateRoot(start, "blue",  hex, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
         //top right edge
-        CreateRoot(start, Color.red, true);
+        CreateRoot(start, "red",  hex, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[2], hex.pointPositions[3]});
         //bottom right edge
-        CreateRoot(start, Color.yellow, true);
+        CreateRoot(start, "yellow",  hex, true);
         start.SetPositions(new Vector3[]{hex.pointPositions[3], hex.pointPositions[4]});
         //bottom left edge
-        CreateRoot(start, Color.green, true);
+        CreateRoot(start, "green", hex, true);
     }
 
-    void CreateRoot(LineRenderer lr, Color rootColor, bool start = false) {
+    void CreateRoot(LineRenderer lr, string rootColor, Hex hex, bool start = false) {
         Mesh lineMesh = new Mesh();
         lr.BakeMesh(lineMesh);
-        root.GetComponentInChildren<MeshFilter>().mesh = lineMesh;
-        Material mat = new Material(Shader.Find("Sprites/Default"));
-        mat.color = rootColor;
-        GameObject newRoot = Instantiate(root, Vector3.zero, Quaternion.identity);     
-        newRoot.GetComponentInChildren<MeshRenderer>().material= mat;  
-        newRoot.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
-        newRoot.GetComponentInChildren<Root>().isStart = start;
+        Vector3[] linePositions = new Vector3[2];
+        lr.GetPositions(linePositions);
+        Vector3 dir =new  Vector3(linePositions[1].x,linePositions[1].y , 0);
+        float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+        GameObject parent = new GameObject("RootParent");
+        parent.AddComponent<MeshCollider>();
+        parent.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
+        Quaternion i = Quaternion.identity;
+        i.z = GetZRotation(linePositions, hex);
+        GameObject newRoot = Instantiate(root,  lineMesh.bounds.center,  i);
+        Debug.Log(newRoot.transform.rotation);
+        //newRoot.transform.SetParent(parent.transform);          
+        newRoot.GetComponent<SpriteRenderer>().sprite = greenSprite;
+        newRoot.GetComponent<Root>().isStart = start;
+        newRoot.GetComponent<Root>().color = rootColor;
+    }
+
+    float GetZRotation(Vector3[] linePos, Hex hex) {
+        string edge = "";
+        foreach(Vector3 linePoint in linePos) {
+            if(linePoint == hex.topPoint) {
+                edge += "Top-Point";
+            } else if (linePoint == hex.topRightPoint) {
+                edge += "Top-RightPoint";
+            } else if (linePoint == hex.botRightPoint) {
+                edge += "Bot-RightPoint";
+            } else if (linePoint == hex.botPoint) {
+                edge += "Bot-Point";
+            } else if (linePoint == hex.botLeftPoint) {
+                 edge += "Bot-LeftPoint";
+            } else if (linePoint == hex.topLeftPoint) {
+                edge += "Top-LeftPoint";    
+            }
+        }
+        if(edge.Contains("Top-Point") && edge.Contains("Top-RightPoint")) {
+            return -103.0f;
+        }else if(edge.Contains("Top-RightPoint") && edge.Contains("Bot-RightPoint")) {
+            return -173.0f;
+        }else if(edge.Contains("Bot-RightPoint") && edge.Contains("Bot-Point")) {
+            return -226.0f;
+        }else if(edge.Contains("Bot-Point") && edge.Contains("Bot-LeftPoint")) {
+            return 70.0f;
+        }else if(edge.Contains("Bot-LeftPoint") && edge.Contains("Top-LeftPoint")) {
+            return 15.0f;
+        }else if(edge.Contains("Top-LeftPoint") && edge.Contains("Top-Point")) {
+            return -37.0f;
+        }
+        return 0.0f;
     }
 
     bool CanPayColorPrice(int price, string colorToCheck) {

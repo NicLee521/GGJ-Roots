@@ -45,7 +45,7 @@ public struct TileData {
         Root rootScript = root.GetComponent<Root>();
         if(!this.attachedRoots.Contains(root)) {
             this.attachedRoots.Add(root);
-            this.numOfColorRoots[rootScript.GetRootColorString()] += 1;
+            this.numOfColorRoots[rootScript.color] += 1;
         }
         if(rootScript.isStart) {
             return;

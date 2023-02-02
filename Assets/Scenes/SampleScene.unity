@@ -695,7 +695,7 @@ LineRenderer:
       atime5: 0
       atime6: 0
       atime7: 0
-      m_Mode: 0
+      m_Mode: 1
       m_NumColorKeys: 2
       m_NumAlphaKeys: 2
     numCornerVertices: 0
@@ -1316,8 +1316,8 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0.0034484863
-        value: 0.03199768
+        time: 0
+        value: 0.04786682
         inSlope: 0
         outSlope: 0
         tangentMode: 0
@@ -1621,6 +1621,10 @@ MonoBehaviour:
   redNum: {fileID: 1397690346}
   yellowNum: {fileID: 88613795}
   greenNum: {fileID: 765327898}
+  greenSprite: {fileID: 651336284, guid: b45fd63eb9c5c1646b7d13ca38e348ce, type: 3}
+  redSprite: {fileID: 0}
+  blueSprite: {fileID: 0}
+  yellowSprite: {fileID: 0}
   colorString: blue
   rootPlacement:
     m_PersistentCalls:
@@ -3042,7 +3046,7 @@ TilemapRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 61e10faa80c203c4cb21e2f91c2ab5f8, type: 2}
+  - {fileID: 2100000, guid: 7ccaffe76380cf44cb821033d6c59370, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -12,12 +12,14 @@ public class Root : MonoBehaviour
     public List<GameObject> connections = new List<GameObject>();
     public List<Vector3Int> connectedTiles = new List<Vector3Int>();
     public bool isStart = false;
+    public Animator anim;
+    public string color;
     void Start()
     {
-        thisCollider = gameObject.GetComponent<MeshCollider>();
+        thisCollider = gameObject.GetComponentInParent<MeshCollider>();
         player = GameObject.FindObjectOfType<PlayerController>();
         map = GameObject.FindObjectOfType<MapController>();
-
+        anim = gameObject.GetComponent<Animator>();
         player.rootPlacement.AddListener(RootPlaced);
         GetConnectedTiles();
         
@@ -74,7 +76,7 @@ public class Root : MonoBehaviour
             return;
         }
         int resourcePerTurn = 10;
-        if(!tileData.takenFrom && tileData.resourceNum > 0 && GetRootColorString() == tileData.resourceColor) {
+        if(!tileData.takenFrom && tileData.resourceNum > 0 && color == tileData.resourceColor) {
             if(resourcePerTurn > tileData.resourceNum) {
                 resourcePerTurn = tileData.resourceNum;
             }
@@ -108,22 +110,6 @@ public class Root : MonoBehaviour
                 connections.Add(col.gameObject);
             }
             SetRootsForTiles();
-        }
-    }
-
-    public string GetRootColorString() {
-        Material mat = gameObject.GetComponent<MeshRenderer>().material;
-        Color currentColor = mat.color;
-        if(currentColor.ToString() == Color.blue.ToString()) {
-            return "blue";
-        }else if(currentColor.ToString() == Color.red.ToString()) {
-            return "red";
-        }else if(currentColor.ToString() == Color.yellow.ToString()) {
-            return "yellow";
-        }else if(currentColor.ToString() == Color.green.ToString()) {
-            return "green";
-        } else {
-            return "none";
         }
     }
 }
