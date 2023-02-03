@@ -14,13 +14,15 @@ public class MenuController : MonoBehaviour
         loadingModel.gameObject.SetActive(false);
     }
     public void GetMainMap() {
-        SceneManager.LoadScene("Map", LoadSceneMode.Single);
+        loadingModel.gameObject.SetActive(true);
+
+        StartCoroutine(LoadRandomMapScene(loadingModel.gameObject.GetComponentInChildren<TMP_Text>(), "Map"));
     }
 
     public void GetRandomMap() {
         loadingModel.gameObject.SetActive(true);
 
-        StartCoroutine(LoadRandomMapScene(loadingModel.gameObject.GetComponentInChildren<TMP_Text>()));
+        StartCoroutine(LoadRandomMapScene(loadingModel.gameObject.GetComponentInChildren<TMP_Text>(), "RandomMap"));
     }
 
     public void DoOptions() {
@@ -31,12 +33,12 @@ public class MenuController : MonoBehaviour
         Application.Quit();
     }
 
-    IEnumerator LoadRandomMapScene(TMP_Text text)
+    IEnumerator LoadRandomMapScene(TMP_Text text, string map)
     {
         yield return null;
 
         //Begin to load the Scene you specify
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync("RandomMap", LoadSceneMode.Single);
+        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(map, LoadSceneMode.Single);
         //Don't let the Scene activate until you allow it to
         asyncOperation.allowSceneActivation = false;
         Debug.Log("Pro :" + asyncOperation.progress);
