@@ -27,10 +27,10 @@ public class PlayerController : MonoBehaviour
 
     private Color color = Color.blue;
     public string colorString = "blue";
-    private int blueResource =  100;
-    private int redResource =  100;
-    private int greenResource =  100;
-    private int yellowResource =  100;
+    private int blueResource =  100000;
+    private int redResource =  100000;
+    private int greenResource =  100000;
+    private int yellowResource =  100000;
 
     public UnityEvent rootPlacement;
     public MapController map;
@@ -88,6 +88,18 @@ public class PlayerController : MonoBehaviour
         return (hitColliders1.Length > 0 || hitColliders2.Length > 0);
     }
 
+    Vector3 SideOfRootStart(Vector3[] linePos, Vector3 defaultPos) {
+        Collider[] hitColliders1 = Physics.OverlapSphere(linePos[0], .1f);
+        Collider[] hitColliders2 = Physics.OverlapSphere(linePos[1], .1f);
+
+        if(hitColliders1.Length > 0) {
+            return linePos[0];
+        } else if (hitColliders2.Length > 0){
+            return linePos[1];
+        }
+        return defaultPos;
+    }
+
     void CreateRootAtRenderer(Hex hex) {
         if(!ChangeResourceValues(-10, colorString)) {
             return;
@@ -121,13 +133,12 @@ public class PlayerController : MonoBehaviour
         lr.BakeMesh(lineMesh);
         Vector3[] linePositions = new Vector3[2];
         lr.GetPositions(linePositions);
-        Vector3 dir =new  Vector3(linePositions[1].x,linePositions[1].y , 0);
-        float angle = Mathf.Atan2 (dir.y, dir.x) * Mathf.Rad2Deg;
+        Vector3 rootStartPos = SideOfRootStart(linePositions, linePositions[0]);
         GameObject parent = new GameObject("RootParent");
         parent.AddComponent<MeshCollider>();
         parent.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
         GameObject newRoot = Instantiate(root,  lineMesh.bounds.center,  Quaternion.identity);
-        newRoot.transform.Rotate(new Vector3(0,0,GetZRotation(linePositions, hex)));
+        newRoot.transform.Rotate(new Vector3(0,0,GetZRotation(linePositions, hex, rootStartPos)));
         newRoot.GetComponent<Root>().isStart = start;
         newRoot.GetComponent<Root>().color = rootColor;
         newRoot.transform.SetParent(parent.transform);
@@ -163,9 +174,25 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    float GetZRotation(Vector3[] linePos, Hex hex) {
+    float GetZRotation(Vector3[] linePos, Hex hex, Vector3 rootStartPos) {
         string edge = "";
         foreach(Vector3 linePoint in linePos) {
+            if(linePoint == rootStartPos) {
+                if(linePoint == hex.topPoint) {
+                    edge = "Top-Point" + edge;
+                } else if (linePoint == hex.topRightPoint) {
+                    edge = "Top-RightPoint" + edge;
+                } else if (linePoint == hex.botRightPoint) {
+                    edge = "Bot-RightPoint" + edge;
+                } else if (linePoint == hex.botPoint) {
+                    edge = "Bot-Point" + edge;
+                } else if (linePoint == hex.botLeftPoint) {
+                    edge = "Bot-LeftPoint" + edge;
+                } else if (linePoint == hex.topLeftPoint) {
+                    edge = "Top-LeftPoint" + edge;    
+                }
+                continue;
+            }
             if(linePoint == hex.topPoint) {
                 edge += "Top-Point";
             } else if (linePoint == hex.topRightPoint) {
@@ -180,18 +207,31 @@ public class PlayerController : MonoBehaviour
                 edge += "Top-LeftPoint";    
             }
         }
-        if(edge.Contains("Top-Point") && edge.Contains("Top-RightPoint")) {
+        Debug.Log(edge);
+        if(edge.Contains("Top-PointTop-RightPoint")) {
             return -103.0f;
-        }else if(edge.Contains("Top-RightPoint") && edge.Contains("Bot-RightPoint")) {
+        }else if(edge.Contains("Top-RightPointTop-Point")) {
+            return -283.0f;
+        }else if(edge.Contains("Top-RightPointBot-RightPoint")) {
             return -173.0f;
-        }else if(edge.Contains("Bot-RightPoint") && edge.Contains("Bot-Point")) {
+        }else if(edge.Contains("Bot-RightPointTop-RightPoint")) {
+            return -353.0f;
+        }else if(edge.Contains("Bot-RightPointBot-Point")) {
             return -226.0f;
-        }else if(edge.Contains("Bot-Point") && edge.Contains("Bot-LeftPoint")) {
+        }else if(edge.Contains("Bot-PointBot-RightPoint")) {
+            return -406.0f;
+        }else if(edge.Contains("Bot-PointBot-LeftPoint")) {
             return 70.0f;
-        }else if(edge.Contains("Bot-LeftPoint") && edge.Contains("Top-LeftPoint")) {
+        }else if(edge.Contains("Bot-LeftPointBot-Point")) {
+            return -110.0f;
+        }else if(edge.Contains("Bot-LeftPointTop-LeftPoint")) {
             return 15.0f;
-        }else if(edge.Contains("Top-LeftPoint") && edge.Contains("Top-Point")) {
+        }else if(edge.Contains("Top-LeftPointBot-LeftPoint")) {
+            return -165.0f;
+        }else if(edge.Contains("Top-LeftPointTop-Point")) {
             return -37.0f;
+        }else if(edge.Contains("Top-PointTop-LeftPoint")) {
+            return -143.0f;
         }
         return 0.0f;
     }
