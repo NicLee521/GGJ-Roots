@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement;
+
 
 
 public class TutorialController : MonoBehaviour
@@ -10,7 +12,7 @@ public class TutorialController : MonoBehaviour
     public TMP_Text body;
     public TMP_Text title;
     public GameObject tutorialUIParent;
-    private string[] tutorialSteps = new string[]{"Introduction", "Roots", "Tiles", "Obstacles", "Resources"};
+    private string[] tutorialSteps = new string[]{"Introduction", "Roots", "Tiles", "Obstacles", "Resources", "Font"};
     public int step = 0;
 
 
@@ -39,6 +41,9 @@ public class TutorialController : MonoBehaviour
             step += 1;
             return;
         }
+        if(step == 5) {
+            SceneManager.LoadScene("WinScreen", LoadSceneMode.Single);   
+        }
         step += 1;
         tutorialUIParent.SetActive(false);
     }
@@ -61,7 +66,12 @@ public class TutorialController : MonoBehaviour
                 body.text = "If you haven't already noticed there are some numbers at the bottom of your screen. These numbers correspond to the colors of roots you have in your aresnal" +
                 " Each root costs 10 resources to make and the only way to get more resources is to connect to the resource tiles. I.e the one you just connected to. These resource tiles give you anywhere between 30 and 70 resources." +
                 " All your resources are finite so be careful with the colors you build and where you build them" + 
-                " We gave you an extra 30 resources to make sure you can get to the end. Now connect to the font and go back to the main menu to try the real map!";
+                " We gave you an extra 30 resources to make sure you can get to the end. Now try to connect to the font";
+                break;
+            case "Font":
+                title.text = "Fonts";
+                body.text = "Congrats you've connected to the blue font of power! When playing normally you would have to connect to all 4 fonts before winning but since this is the tutorial we will leave it here." +
+                "To play the real map just select Map 1 in the map selection screen! Good Luck!";
                 break;
         }
         tutorialUIParent.SetActive(true);

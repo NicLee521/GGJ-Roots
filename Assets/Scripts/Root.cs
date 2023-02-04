@@ -49,6 +49,8 @@ public class Root : MonoBehaviour
             return;
         }
         float percentTarget = 40.0f;
+        TutorialController tutorial = GameObject.FindObjectOfType<TutorialController>();
+
         switch(tileData.tile.name) {
             case "FontRed":
                 if(GetPercentOfRootsOfColor("red", tileData) >= percentTarget) {
@@ -60,7 +62,9 @@ public class Root : MonoBehaviour
                 if(GetPercentOfRootsOfColor("blue", tileData) >= percentTarget) {
                     player.fontBlue = true;
                     player.tileMap.SetTile(tilePos, capturedFont);
-
+                    if(tutorial != null) {
+                        tutorial.PlayStep();
+                    }
                 }
                 break;
             case "FontYellow":
