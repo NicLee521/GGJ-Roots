@@ -136,7 +136,14 @@ public class PlayerController : MonoBehaviour
         Vector3 rootStartPos = SideOfRootStart(linePositions, linePositions[0]);
         GameObject parent = new GameObject("RootParent");
         parent.AddComponent<MeshCollider>();
+        parent.AddComponent<RootParent>();
+        parent.AddComponent<Rigidbody>();
+        parent.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.FreezeAll;
+        parent.GetComponent<Rigidbody>().useGravity = false;
+        parent.tag = "Root";
         parent.GetComponentInChildren<MeshCollider>().sharedMesh= lineMesh;
+        parent.GetComponentInChildren<MeshCollider>().convex= true;
+        
         GameObject newRoot = Instantiate(root,  lineMesh.bounds.center,  Quaternion.identity);
         newRoot.transform.Rotate(new Vector3(0,0,GetZRotation(linePositions, hex, rootStartPos)));
         newRoot.GetComponent<Root>().isStart = start;

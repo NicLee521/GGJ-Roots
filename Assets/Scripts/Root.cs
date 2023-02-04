@@ -22,6 +22,7 @@ public class Root : MonoBehaviour
         gameObject.GetComponent<Animator>().runtimeAnimatorController = player.GetCorrectController(color);
         player.rootPlacement.AddListener(RootPlaced);
         GetConnectedTiles();
+        gameObject.GetComponentInParent<RootParent>().root = this;
         
     }
 
@@ -87,12 +88,6 @@ public class Root : MonoBehaviour
         }
     }
 
-    void SetRootsForTiles() {
-        foreach(Vector3Int tile in connectedTiles) {
-            map.mapDict[tile].SetAttachedRoots(gameObject);
-        }
-    }
-
     void GetConnectedTiles() {
         Bounds colBounds = thisCollider.bounds;
         Tilemap tileMap = GameObject.Find("Tilemap").GetComponent<Tilemap>();
@@ -104,12 +99,5 @@ public class Root : MonoBehaviour
         connectedTiles.Add(leftTile);
     }
 
-    void OnCollisionEnter(Collision col) {
-        if(col.gameObject.tag == "Root") {
-            if(!connections.Contains(col.gameObject)) {
-                connections.Add(col.gameObject);
-            }
-            SetRootsForTiles();
-        }
-    }
+    
 }
