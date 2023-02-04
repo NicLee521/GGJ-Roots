@@ -125,13 +125,13 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene("Lose", LoadSceneMode.Single);
             return;
         }
-        if(blueResource < 10 && fontBlue){
+        if(blueResource < 10 && fontBlue && colorString == "blue"){
             return;
-        } else if(redResource < 10 && fontRed){
+        } else if(redResource < 10 && fontRed && colorString == "red"){
             return;
-        } else if(greenResource < 10 && fontGreen){
+        } else if(greenResource < 10 && fontGreen && colorString =="green"){
             return;
-        } else if(yellowResource < 10 && fontYellow){
+        } else if(yellowResource < 10 && fontYellow && colorString == "yellow"){
             return;
         }
         CreateRoot(lineRenderer, colorString, hex, false);
