@@ -38,7 +38,7 @@ public class PlayerController : MonoBehaviour
     private Color color = Color.blue;
     public string colorString = "blue";
     private int blueResource =  100;
-    private int redResource =  100;
+    private int redResource =  1000;
     private int greenResource =  100;
     private int yellowResource =  100;
 
@@ -53,9 +53,6 @@ public class PlayerController : MonoBehaviour
     void Start() {
         map = GameObject.FindObjectOfType<MapController>();
         tutorial = GameObject.FindObjectOfType<TutorialController>();
-        if(tutorial == null) {
-            GameObject.Find("TutorialCanvas").SetActive(false);
-        }
         LineRenderer start = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         start.startWidth = .25f;
         start.useWorldSpace = true;
@@ -137,6 +134,10 @@ public class PlayerController : MonoBehaviour
         start.positionCount = 2;
         start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
         //top left edge
+        if(tutorial != null) {
+            CreateRoot(start, "blue",  hex, true);
+            return;
+        }
         CreateRoot(start, "blue",  hex, true);
         Vector3 tpos1 = tileMap.GetCellCenterWorld(new Vector3Int(1,2,0));
         Hex hex1 = new Hex(tpos1, tileMap);
@@ -273,6 +274,9 @@ public class PlayerController : MonoBehaviour
 
     bool CanPayColorPrice(int price, string colorToCheck) {
         if(price >= 0) {
+            if(tutorial != null && tutorial.step == 3) {
+                tutorial.PlayStep();
+            }
             return true;
         }
         price = Mathf.Abs(price);
