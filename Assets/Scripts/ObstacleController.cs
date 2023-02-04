@@ -15,9 +15,13 @@ public class ObstacleController : MonoBehaviour
     public List<Obstacle> obstacles = new List<Obstacle>();
     public Tilemap tileMap;
     public MapController map;
+    public TutorialController tutorial;
     public void IfTileIsTrigger(Vector3Int tilePos) {
         foreach(Obstacle obs in obstacles) {
             if(obs.triggerHexes.Exists(trigger => tilePos == trigger)) {
+                if(tutorial != null && tutorial.step == 3) {
+                    tutorial.PlayStep();
+                }
                 SetObstacle(obs);
                 return;
             }

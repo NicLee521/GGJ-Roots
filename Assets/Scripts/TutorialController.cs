@@ -10,7 +10,7 @@ public class TutorialController : MonoBehaviour
     public TMP_Text body;
     public TMP_Text title;
     public GameObject tutorialUIParent;
-    private string[] tutorialSteps = new string[]{"Introduction", "Roots", "Tiles", "Obstacles"};
+    private string[] tutorialSteps = new string[]{"Introduction", "Roots", "Tiles", "Obstacles", "Resources"};
     public int step = 0;
 
 
@@ -53,11 +53,15 @@ public class TutorialController : MonoBehaviour
                 + " Go on and gather that resource there.";
                 break;
             case "Obstacles":
-                title.text = "Tiles";
-                body.text = "In roots of life there are a couple different tiles. The swirly ones are resource tiles, when a root of the matching color connects to a resource tile you get a random amount of resources applied to your total. They are depleted after gathering their resources so be careful" +
-                " Next are rock tiles, these block your path so that you have to go around them" +
-                " The last tile type is the font entrance, these are the stone path looking tiles by the fonts. In order to connect to a font you must have at least 2 roots of the same color connected to the font tile and over 60% of the path to get there be the corresponding color."
-                + " Go on and gather that resource there.";
+                title.text = "Obstacles";
+                body.text = "Slow down there! You'll notice some new rocks are ahead of you now. Be careful of the paths you choose because there could be hidden consequences anywhere";
+                break;
+            case "Resources":
+                title.text = "Resources";
+                body.text = "If you haven't already noticed there are some numbers at the bottom of your screen. These numbers correspond to the colors of roots you have in your aresnal" +
+                " Each root costs 10 resources to make and the only way to get more resources is to connect to the resource tiles. I.e the one you just connected to. These resource tiles give you anywhere between 30 and 70 resources." +
+                " All your resources are finite so be careful with the colors you build and where you build them" + 
+                " We gave you an extra 30 resources to make sure you can get to the end. Now connect to the font and go back to the main menu to try the real map!";
                 break;
         }
         tutorialUIParent.SetActive(true);
