@@ -57,6 +57,7 @@ public class PlayerController : MonoBehaviour
         Vector3 worldPoint = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         Vector3Int tilePos = tileMap.WorldToCell((Vector2) worldPoint);
         Vector3 tpos = tileMap.GetCellCenterWorld(tilePos);
+        TileBase tile = tileMap.GetTile(tilePos);
         Hex hex = new Hex(tpos, tileMap);
         lineRenderer1.positionCount  = hex.pointPositions.Length;
         lineRenderer1.loop = true;
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour
         lineRenderer.positionCount  = 2;
         Vector3[] linePos = CheckMouse(worldPoint, hex);
         lineRenderer.SetPositions(linePos);
-        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos)) {
+        if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos) && tile.name != "Blocker") {
             CreateRootAtRenderer(hex);
             if(CheckForComplete()){
                 Debug.Log("win");

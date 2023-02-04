@@ -9,6 +9,7 @@ public class Root : MonoBehaviour
     Collider thisCollider;
     PlayerController player;
     MapController map;
+    ObstacleController obstacle;
     public List<GameObject> connections = new List<GameObject>();
     public List<Vector3Int> connectedTiles = new List<Vector3Int>();
     public bool isStart = false;
@@ -18,6 +19,7 @@ public class Root : MonoBehaviour
         thisCollider = gameObject.GetComponentInParent<MeshCollider>();
         player = GameObject.FindObjectOfType<PlayerController>();
         map = GameObject.FindObjectOfType<MapController>();
+        obstacle = GameObject.FindObjectOfType<ObstacleController>();
         gameObject.GetComponent<SpriteRenderer>().sprite = player.GetCorrectSprite(color);
         gameObject.GetComponent<Animator>().runtimeAnimatorController = player.GetCorrectController(color);
         player.rootPlacement.AddListener(RootPlaced);
@@ -31,6 +33,7 @@ public class Root : MonoBehaviour
             TileData tileData = map.mapDict[tilePos];
             HandleResourceTile(tileData, tilePos);
             HandleFontTile(tileData, tilePos);
+            obstacle.IfTileIsTrigger(tilePos);
         }
     }
 
