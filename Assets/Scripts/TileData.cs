@@ -39,7 +39,7 @@ public struct TileData {
                 this.resourceColor = "none";
                 break;
         }
-        this.resourceNum = Random.Range(20,60);
+        this.resourceNum = Random.Range(30,70);
     }
 
     public void SetAttachedRoots(GameObject root) {

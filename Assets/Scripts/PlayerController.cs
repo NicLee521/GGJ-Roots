@@ -10,7 +10,7 @@ public class PlayerController : MonoBehaviour
 {
     
 
-    [SerializeField] Tilemap tileMap;
+    [SerializeField] public Tilemap tileMap;
     [SerializeField] LineRenderer lineRenderer1;
     [SerializeField] LineRenderer lineRenderer;
     [SerializeField] GameObject root;
@@ -18,19 +18,29 @@ public class PlayerController : MonoBehaviour
     [SerializeField] TMP_Text redNum;
     [SerializeField] TMP_Text yellowNum;
     [SerializeField] TMP_Text greenNum;
+    
+    [SerializeField] TMP_Text blueChange;
+    [SerializeField] TMP_Text redChange;
+    [SerializeField] TMP_Text yellowChange;
+    [SerializeField] TMP_Text greenChange;
     [SerializeField] public Sprite greenSprite;
     [SerializeField] public Sprite redSprite;
     [SerializeField] public Sprite blueSprite;
     [SerializeField] public Sprite yellowSprite;
+    
     [SerializeField] public RuntimeAnimatorController red, blue, green, yellow;
+
+    [SerializeField] public Tile capturedFont;
+    [SerializeField] public Tile emptyResource;
+
 
 
     private Color color = Color.blue;
     public string colorString = "blue";
-    private int blueResource =  100000;
-    private int redResource =  100000;
-    private int greenResource =  100000;
-    private int yellowResource =  100000;
+    private int blueResource =  100;
+    private int redResource =  100;
+    private int greenResource =  100;
+    private int yellowResource =  100;
 
     public UnityEvent rootPlacement;
     public MapController map;
@@ -43,6 +53,10 @@ public class PlayerController : MonoBehaviour
         LineRenderer start = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         start.startWidth = .25f;
         start.useWorldSpace = true;
+        greenChange.gameObject.SetActive(false);
+        blueChange.gameObject.SetActive(false);
+        redChange.gameObject.SetActive(false);
+        yellowChange.gameObject.SetActive(false);
         CreateStartRoots(start);
         if(rootPlacement == null) {
             rootPlacement = new UnityEvent();
@@ -64,9 +78,9 @@ public class PlayerController : MonoBehaviour
         lineRenderer.SetPositions(linePos);
         if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject() && !RootAlreadyHere(linePos) && RootConnected(linePos) && tile.name != "Blocker") {
             CreateRootAtRenderer(hex);
-            if(CheckForComplete()){
-                Debug.Log("win");
-            }
+        }
+        if(CheckForComplete()){
+            Debug.Log("win");
         }
     }
 
@@ -100,13 +114,14 @@ public class PlayerController : MonoBehaviour
 
     void CreateRootAtRenderer(Hex hex) {
         if(!ChangeResourceValues(-10, colorString)) {
+            Debug.Log("Lose");
             return;
         }
         CreateRoot(lineRenderer, colorString, hex, false);
         rootPlacement.Invoke();
-        if(!ChangeResourceValues(-5, null)) {
-            Debug.Log("Lose");
-        }
+        // if(!ChangeResourceValues(-5, null)) {
+        //     Debug.Log("Lose");
+        // }
         map.ClearAllTaken();
     }
 
@@ -154,6 +169,8 @@ public class PlayerController : MonoBehaviour
         newRoot.transform.Rotate(new Vector3(0,0,GetZRotation(linePositions, hex, rootStartPos)));
         newRoot.GetComponent<Root>().isStart = start;
         newRoot.GetComponent<Root>().color = rootColor;
+        newRoot.GetComponent<Root>().capturedFont = capturedFont;
+        newRoot.GetComponent<Root>().emptyResource = emptyResource;
         newRoot.transform.SetParent(parent.transform);
     }
 
@@ -295,6 +312,7 @@ public class PlayerController : MonoBehaviour
         redNum.text = redResource.ToString();
         greenNum.text = greenResource.ToString();
         yellowNum.text = yellowResource.ToString();
+        StartCoroutine(PopChange(numToChange, colorToReduce));
         return true;
     }
 
@@ -343,6 +361,42 @@ public class PlayerController : MonoBehaviour
             default:
                 color = Color.blue;
                 colorString = "blue";
+                break;
+        }
+    }
+
+    IEnumerator PopChange(int value, string color) {
+        string startText = "";
+        if(value > 0) {
+            startText = "+";
+        }
+        switch(color) {
+            case "red":
+
+                redChange.text = startText + value;
+                redChange.gameObject.SetActive(true);
+                yield return new WaitForSeconds(2);
+                redChange.gameObject.SetActive(false);
+                break;
+            case "green":
+                greenChange.text = startText + value;
+                greenChange.gameObject.SetActive(true);
+                yield return new WaitForSeconds(2);
+                greenChange.gameObject.SetActive(false);
+                break;
+            case "blue":
+                blueChange.text = startText + value;
+                blueChange.gameObject.SetActive(true);
+                yield return new WaitForSeconds(2);
+                blueChange.gameObject.SetActive(false);
+                break;
+            case "yellow":
+                yellowChange.text = startText +  value;
+                yellowChange.gameObject.SetActive(true);
+                yield return new WaitForSeconds(2);
+                yellowChange.gameObject.SetActive(false);
+                break;
+            default:
                 break;
         }
     }
