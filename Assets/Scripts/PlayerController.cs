@@ -88,6 +88,9 @@ public class PlayerController : MonoBehaviour
     }
 
     bool CheckForComplete() {
+        if(tutorial != null) {
+            return fontBlue;
+        }
         return (fontBlue && fontGreen && fontRed && fontYellow);
     }
 
@@ -274,7 +277,7 @@ public class PlayerController : MonoBehaviour
 
     bool CanPayColorPrice(int price, string colorToCheck) {
         if(price >= 0) {
-            if(tutorial != null && tutorial.step == 3) {
+            if(tutorial != null && tutorial.step == 4) {
                 tutorial.PlayStep();
             }
             return true;
@@ -297,6 +300,9 @@ public class PlayerController : MonoBehaviour
     public bool ChangeResourceValues (int numToChange, string colorToReduce) {
         if(!CanPayColorPrice(numToChange, colorToReduce)) {
             return false;
+        }
+        if(tutorial != null && numToChange > 0) {
+            colorToReduce += 30;
         }
         switch(colorToReduce){
             case "blue":

@@ -2117,8 +2117,8 @@ Tilemap:
   - first: {x: 2, y: -3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 7
-      m_TileSpriteIndex: 4
+      m_TileIndex: 16
+      m_TileSpriteIndex: 13
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -2127,8 +2127,8 @@ Tilemap:
   - first: {x: 3, y: -3, z: 0}
     second:
       serializedVersion: 2
-      m_TileIndex: 2
-      m_TileSpriteIndex: 2
+      m_TileIndex: 7
+      m_TileSpriteIndex: 4
       m_TileMatrixIndex: 1
       m_TileColorIndex: 0
       m_TileObjectToInstantiateIndex: 65535
@@ -3810,7 +3810,7 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 382f636e95242d24a9bbead0a3fc47aa, type: 2}
   - m_RefCount: 1
     m_Data: {fileID: 11400000, guid: d6b751ffbab2d624a8cd189548e0b6c6, type: 2}
-  - m_RefCount: 136
+  - m_RefCount: 135
     m_Data: {fileID: 11400000, guid: 8dd320efc49f4234290cab54541b169c, type: 2}
   - m_RefCount: 24
     m_Data: {fileID: 11400000, guid: 6712023778c255e408d9354c73a62519, type: 2}
@@ -3838,14 +3838,14 @@ Tilemap:
     m_Data: {fileID: 11400000, guid: 1080caa61a9837e4780848752031aa46, type: 2}
   - m_RefCount: 11
     m_Data: {fileID: 11400000, guid: 1dd92f71208868a4f9bff93bef105fd5, type: 2}
-  - m_RefCount: 1
+  - m_RefCount: 2
     m_Data: {fileID: 11400000, guid: d23dd1a8a13e2004f8b2b787541970ad, type: 2}
   m_TileSpriteArray:
   - m_RefCount: 5
     m_Data: {fileID: -1935808345, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
   - m_RefCount: 3
     m_Data: {fileID: 1886584679, guid: 9c94449d74178c74fa329e33751e495c, type: 3}
-  - m_RefCount: 136
+  - m_RefCount: 135
     m_Data: {fileID: 1170631636, guid: 70731caba11f0aa43adced8933a84e21, type: 3}
   - m_RefCount: 24
     m_Data: {fileID: 1547929961, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
@@ -3867,7 +3867,7 @@ Tilemap:
     m_Data: {fileID: 1000714710, guid: 582420942da9fbc4bba319de7250bd91, type: 3}
   - m_RefCount: 11
     m_Data: {fileID: -603359957, guid: 582420942da9fbc4bba319de7250bd91, type: 3}
-  - m_RefCount: 1
+  - m_RefCount: 2
     m_Data: {fileID: -1883977663, guid: 9c94449d74178c74fa329e33751e495c, type: 3}
   m_TileMatrixArray:
   - m_RefCount: 0
@@ -4309,8 +4309,48 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1764600889}
     - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: tutorial
+      value: 
+      objectReference: {fileID: 2047372890}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.size
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
       propertyPath: obstacles.Array.data[1].obstaclePositions.Array.size
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[4].x
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[4].y
+      value: -2
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[5].x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[5].y
+      value: -3
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[6].x
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[6].y
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[7].x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 212163394034645884, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
+      propertyPath: obstacles.Array.data[1].triggerHexes.Array.data[7].y
+      value: -5
       objectReference: {fileID: 0}
     - target: {fileID: 212163394034645885, guid: 3a9cd4fea52888b4f85435a020a3ec37, type: 3}
       propertyPath: tileMap
