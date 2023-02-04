@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: RedResource
+  m_Name: FontBlue
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 1886584679, guid: 9c94449d74178c74fa329e33751e495c, type: 3}
+  m_Sprite: {fileID: -732573136, guid: 5346ce7c8f3c91c4484bcfccfef1ca9f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

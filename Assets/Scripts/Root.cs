@@ -21,6 +21,7 @@ public class Root : MonoBehaviour
         map = GameObject.FindObjectOfType<MapController>();
         obstacle = GameObject.FindObjectOfType<ObstacleController>();
         gameObject.GetComponent<SpriteRenderer>().sprite = player.GetCorrectSprite(color);
+        gameObject.GetComponent<SpriteRenderer>().sortingOrder  = 1;
         gameObject.GetComponent<Animator>().runtimeAnimatorController = player.GetCorrectController(color);
         player.rootPlacement.AddListener(RootPlaced);
         GetConnectedTiles();

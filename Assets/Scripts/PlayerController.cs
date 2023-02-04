@@ -40,13 +40,10 @@ public class PlayerController : MonoBehaviour
 
     void Start() {
         map = GameObject.FindObjectOfType<MapController>();
-        Vector3Int centerCell = new Vector3Int(0,0,0);
-        Vector3 tpos = tileMap.GetCellCenterWorld(centerCell);
-        Hex hex = new Hex(tpos, tileMap);
         LineRenderer start = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         start.startWidth = .25f;
         start.useWorldSpace = true;
-        CreateStartRoots(hex, start);
+        CreateStartRoots(start);
         if(rootPlacement == null) {
             rootPlacement = new UnityEvent();
         }
@@ -113,20 +110,28 @@ public class PlayerController : MonoBehaviour
         map.ClearAllTaken();
     }
 
-    void CreateStartRoots(Hex hex, LineRenderer start) {
+    void CreateStartRoots(LineRenderer start) {
+        Vector3 tpos = tileMap.GetCellCenterWorld(new Vector3Int(1,-2,0));
+        Hex hex = new Hex(tpos, tileMap);
         start.positionCount = 2;
-        start.SetPositions(new Vector3[]{hex.pointPositions[5], hex.pointPositions[0]});
+        start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
         //top left edge
         CreateRoot(start, "blue",  hex, true);
-        start.SetPositions(new Vector3[]{hex.pointPositions[0], hex.pointPositions[1]});
+        Vector3 tpos1 = tileMap.GetCellCenterWorld(new Vector3Int(1,2,0));
+        Hex hex1 = new Hex(tpos1, tileMap);
+        start.SetPositions(new Vector3[]{hex1.pointPositions[3], hex1.pointPositions[2]});
         //top right edge
-        CreateRoot(start, "red",  hex, true);
-        start.SetPositions(new Vector3[]{hex.pointPositions[2], hex.pointPositions[3]});
+        CreateRoot(start, "red",  hex1, true);
+        Vector3 tpos2 = tileMap.GetCellCenterWorld(new Vector3Int(-1,-2,0));
+        Hex hex2 = new Hex(tpos2, tileMap);
+        start.SetPositions(new Vector3[]{hex2.pointPositions[0], hex2.pointPositions[5]});
         //bottom right edge
-        CreateRoot(start, "yellow",  hex, true);
-        start.SetPositions(new Vector3[]{hex.pointPositions[3], hex.pointPositions[4]});
+        CreateRoot(start, "yellow",  hex2, true);
+        Vector3 tpos3 = tileMap.GetCellCenterWorld(new Vector3Int(-1,2,0));
+        Hex hex3 = new Hex(tpos3, tileMap);
+        start.SetPositions(new Vector3[]{hex3.pointPositions[3], hex3.pointPositions[4]});
         //bottom left edge
-        CreateRoot(start, "green", hex, true);
+        CreateRoot(start, "green", hex3, true);
     }
 
     void CreateRoot(LineRenderer lr, string rootColor, Hex hex, bool start = false) {
@@ -238,7 +243,7 @@ public class PlayerController : MonoBehaviour
         }else if(edge.Contains("Top-LeftPointTop-Point")) {
             return -37.0f;
         }else if(edge.Contains("Top-PointTop-LeftPoint")) {
-            return -143.0f;
+            return -217.0f;
         }
         return 0.0f;
     }
