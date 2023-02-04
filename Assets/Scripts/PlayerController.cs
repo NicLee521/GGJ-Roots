@@ -207,7 +207,6 @@ public class PlayerController : MonoBehaviour
                 edge += "Top-LeftPoint";    
             }
         }
-        Debug.Log(edge);
         if(edge.Contains("Top-PointTop-RightPoint")) {
             return -103.0f;
         }else if(edge.Contains("Top-RightPointTop-Point")) {

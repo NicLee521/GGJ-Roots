@@ -1567,7 +1567,7 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
+  far clip plane: 10
   field of view: 60
   orthographic: 1
   orthographic size: 6.2513285
@@ -1594,7 +1594,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: -0.25, y: -0.5, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1938,6 +1938,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileSprites:
   - {fileID: 1862113577, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
+  - {fileID: 838647574, guid: 8a7c2b67e704d6143a28ea4dc2b81b83, type: 3}
+  - {fileID: 422261237, guid: 8a7c2b67e704d6143a28ea4dc2b81b83, type: 3}
+  - {fileID: -1532146503, guid: 8a7c2b67e704d6143a28ea4dc2b81b83, type: 3}
+  - {fileID: -893067178, guid: 8a7c2b67e704d6143a28ea4dc2b81b83, type: 3}
+  - {fileID: 530584469, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
+  - {fileID: -1935808345, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
+  - {fileID: 1547929961, guid: 8daecb60aba4ad14f8ce125585ad295e, type: 3}
   maxResourceTilesOfOneColor: 3
   tileMapToRender: {fileID: 1764600889}
   height: 0
