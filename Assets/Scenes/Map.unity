@@ -1897,6 +1897,7 @@ MonoBehaviour:
     - {x: 3, y: 3, z: 0}
     - {x: 5, y: 0, z: 0}
   blocker: {fileID: 11400000, guid: 2b5aca9bb2af1be499bafc7b908beabe, type: 2}
+  tileMap: {fileID: 1764600889}
 --- !u!4 &669050170
 Transform:
   m_ObjectHideFlags: 0
