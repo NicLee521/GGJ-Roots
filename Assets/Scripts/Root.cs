@@ -29,7 +29,6 @@ public class Root : MonoBehaviour
         Vector3Int[] currentTiles = GetConnectedTiles();
         foreach(Vector3Int tilePos in currentTiles) {
             TileData tile = map.mapDict[tilePos];
-            Debug.Log(tile.tile.name);
             HandleResourceTile(tile, tilePos);
             HandleFontTile(tile, tilePos);
 
@@ -52,7 +51,6 @@ public class Root : MonoBehaviour
         float percentTarget = 40.0f;
         switch(tileData.tile.name) {
             case "FontRed":
-                Debug.Log(GetPercentOfRootsOfColor("red", tileData));
                 if(GetPercentOfRootsOfColor("red", tileData) >= percentTarget) {
                     player.fontRed = true;
                     player.tileMap.SetTile(tilePos, capturedFont);
@@ -83,11 +81,7 @@ public class Root : MonoBehaviour
     }
 
     float GetPercentOfRootsOfColor(string color, TileData tileData) {
-        int totalRoots = 0;
-        foreach (var item in tileData.numOfColorRoots){
-            totalRoots += item.Value;
-        }
-        return ((float)tileData.numOfColorRoots[color]/ (float)totalRoots)*100.0f;
+        return ((float)tileData.numOfColorRoots[color]/ (float)tileData.totalRoots)*100.0f;
     }
 
     void HandleResourceTile(TileData tileData, Vector3Int tilePos) {

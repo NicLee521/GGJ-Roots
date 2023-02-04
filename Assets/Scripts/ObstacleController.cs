@@ -14,6 +14,7 @@ public class ObstacleController : MonoBehaviour
 {
     public List<Obstacle> obstacles = new List<Obstacle>();
     public Tilemap tileMap;
+    public MapController map;
     public void IfTileIsTrigger(Vector3Int tilePos) {
         foreach(Obstacle obs in obstacles) {
             if(obs.triggerHexes.Exists(trigger => tilePos == trigger)) {
@@ -26,6 +27,9 @@ public class ObstacleController : MonoBehaviour
     private void SetObstacle(Obstacle obs) {
         foreach(Vector3Int pos in obs.obstaclePositions) {
             tileMap.SetTile(pos, obs.obstacleTile);
+            TileData newTile =  map.mapDict[pos];
+            newTile.tile = obs.obstacleTile;
+            map.mapDict[pos] = newTile;
         }
     }
 

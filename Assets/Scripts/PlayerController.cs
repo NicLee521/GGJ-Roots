@@ -46,10 +46,16 @@ public class PlayerController : MonoBehaviour
     public MapController map;
 
     public bool fontRed, fontBlue, fontGreen, fontYellow;
+
+    public TutorialController tutorial;
    
 
     void Start() {
         map = GameObject.FindObjectOfType<MapController>();
+        tutorial = GameObject.FindObjectOfType<TutorialController>();
+        if(tutorial == null) {
+            GameObject.Find("TutorialCanvas").SetActive(false);
+        }
         LineRenderer start = gameObject.AddComponent(typeof(LineRenderer)) as LineRenderer;
         start.startWidth = .25f;
         start.useWorldSpace = true;
@@ -119,10 +125,10 @@ public class PlayerController : MonoBehaviour
         }
         CreateRoot(lineRenderer, colorString, hex, false);
         rootPlacement.Invoke();
-        // if(!ChangeResourceValues(-5, null)) {
-        //     Debug.Log("Lose");
-        // }
         map.ClearAllTaken();
+        if(tutorial != null && tutorial.step == 2) {
+            tutorial.PlayStep();
+        }
     }
 
     void CreateStartRoots(LineRenderer start) {

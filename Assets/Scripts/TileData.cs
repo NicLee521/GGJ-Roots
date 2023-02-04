@@ -6,6 +6,8 @@ using UnityEngine.Tilemaps;
 
 public struct TileData {
     public int resourceNum;
+    public int totalRoots;
+
     public string resourceColor;
     public TileBase tile;
     public bool takenFrom;
@@ -40,6 +42,7 @@ public struct TileData {
                 break;
         }
         this.resourceNum = Random.Range(30,70);
+        this.totalRoots = 0;
     }
 
     public void SetAttachedRoots(GameObject root) {
@@ -47,6 +50,7 @@ public struct TileData {
         if(!this.attachedRoots.Contains(root)) {
             this.attachedRoots.Add(root);
             this.numOfColorRoots[rootScript.color] += 1;
+            totalRoots += 1;
         }
         if(rootScript.isStart) {
             return;
