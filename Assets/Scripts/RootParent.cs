@@ -19,7 +19,7 @@ public class RootParent : MonoBehaviour
 
     void OnCollisionEnter(Collision col) {
         if(col.gameObject.tag == "Root") {
-            if(!root.connections.Contains(col.gameObject)) {
+            if(!root.connections.Contains(col.gameObject.transform.GetChild(0).gameObject)) {
                 root.connections.Add(col.gameObject.transform.GetChild(0).gameObject);
             }
             SetRootsForTiles();
