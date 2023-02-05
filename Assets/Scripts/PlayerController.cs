@@ -40,7 +40,7 @@ public class PlayerController : MonoBehaviour
     private Color color = Color.blue;
     public string colorString = "blue";
     private int blueResource =  100;
-    private int redResource =  500;
+    private int redResource =  100;
     private int greenResource =  100;
     private int yellowResource =  100;
 
@@ -122,16 +122,22 @@ public class PlayerController : MonoBehaviour
 
     void CreateRootAtRenderer(Hex hex) {
         if(!ChangeResourceValues(-10, colorString)) {
+            if(colorString == "blue" && fontBlue) {
+                return;
+            }
+            if(colorString == "red" && fontRed) {
+                return;
+            }
+            if(colorString == "yellow" && fontYellow) {
+                return;
+            }
+            if(colorString == "green" && fontGreen) {
+                return;
+            }
+            if(redResource > 10 || blueResource > 10 || yellowResource > 10|| greenResource > 10) {
+                return;
+            }
             SceneManager.LoadScene("Lose", LoadSceneMode.Single);
-            return;
-        }
-        if(blueResource < 10 && fontBlue && colorString == "blue"){
-            return;
-        } else if(redResource < 10 && fontRed && colorString == "red"){
-            return;
-        } else if(greenResource < 10 && fontGreen && colorString =="green"){
-            return;
-        } else if(yellowResource < 10 && fontYellow && colorString == "yellow"){
             return;
         }
         CreateRoot(lineRenderer, colorString, hex, false);
@@ -296,13 +302,13 @@ public class PlayerController : MonoBehaviour
         price = Mathf.Abs(price);
         switch(colorToCheck){
             case "blue":
-                return (blueResource >= price) || fontBlue;
+                return (blueResource >= price);
             case "red":
-                return (redResource >= price) || fontRed;
+                return (redResource >= price);
             case "green":
-                return (greenResource >= price) || fontGreen;
+                return (greenResource >= price);
             case "yellow":
-                return (yellowResource >= price) || fontYellow;
+                return (yellowResource >= price);
             default:
                 return (yellowResource >= price && greenResource >= price && redResource >= price && blueResource >= price);
         }
@@ -313,17 +319,7 @@ public class PlayerController : MonoBehaviour
             return false;
         }
         if(tutorial != null && numToChange > 0) {
-            colorToReduce += 30;
-        }
-        if(blueResource < 10 && fontBlue){
-            return true;
-        } else if(redResource < 10 && fontRed){
-            Debug.Log("here");
-            return true;
-        } else if(greenResource < 10 && fontGreen){
-            return true;
-        } else if(yellowResource < 10 && fontYellow){
-            return true;
+            numToChange += 30;
         }
         switch(colorToReduce){
             case "blue":
