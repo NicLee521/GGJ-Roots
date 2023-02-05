@@ -8,6 +8,10 @@ using TMPro;
 
 public class MenuController : MonoBehaviour
 {
+    void Start() {
+        GameObject audio = GameObject.Find("Audio Source");
+        DontDestroyOnLoad(audio);
+    }
     // Start is called before the first frame update
     public void GetMapSelection() {
         SceneManager.LoadScene("MapSelection", LoadSceneMode.Single);   
