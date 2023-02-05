@@ -71,6 +71,7 @@ public class TutorialController : MonoBehaviour
             case "Font":
                 title.text = "Fonts";
                 body.text = "Congrats you've connected to the blue font of power! When playing normally you would have to connect to all 4 fonts before winning but since this is the tutorial we will leave it here." +
+                "You will lose the game if you run out of resoruces and aren't connected to that colors font so be careful and make sure you connect to the fonts before building frivolously." +
                 "To play the real map just select Map 1 in the map selection screen! Good Luck!";
                 break;
         }

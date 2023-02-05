@@ -87,6 +87,9 @@ public class PlayerController : MonoBehaviour
         if(CheckForComplete()){
             SceneManager.LoadScene("WinScreen", LoadSceneMode.Single);   
         }
+        if(CheckForLose()){
+            SceneManager.LoadScene("Lose", LoadSceneMode.Single);   
+        }
     }
 
     bool CheckForComplete() {
@@ -94,6 +97,24 @@ public class PlayerController : MonoBehaviour
             return false;
         }
         return (fontBlue && fontGreen && fontRed && fontYellow);
+    }
+
+    bool CheckForLose() {
+        if(tutorial != null) {
+            return false;
+        }
+        switch (colorString) {
+            case "blue":
+                return(blueResource < 10 && !fontBlue);
+            case "red":
+                return(redResource < 10 && !fontRed);
+            case "yellow": 
+                return(yellowResource < 10 && !fontYellow);
+            case "green": 
+                return(greenResource < 10 && !fontGreen);
+            default:
+                return false;
+        }
     }
 
     bool RootAlreadyHere(Vector3[] linePos) {
@@ -132,9 +153,6 @@ public class PlayerController : MonoBehaviour
                 return;
             }
             if(colorString == "green" && fontGreen) {
-                return;
-            }
-            if(redResource > 10 || blueResource > 10 || yellowResource > 10|| greenResource > 10) {
                 return;
             }
             SceneManager.LoadScene("Lose", LoadSceneMode.Single);
