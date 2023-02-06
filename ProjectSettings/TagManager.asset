@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Dropdown
   - Root
+  - Audio
   layers:
   - Default
   - TransparentFX
